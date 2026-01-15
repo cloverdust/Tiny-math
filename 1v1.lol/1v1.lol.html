@@ -1,0 +1,199 @@
+<html lang="en-us"><head>
+    <meta charset="utf-8">
+    <title>1v1.LOL</title>
+    
+    <script type="text/javascript" async="" src="https://ssl.cdne.cpmstar.com/cached/zonemasters/cpmstarjsgameapi.js?ver=1349"></script><script type="text/javascript" async="" src="https://ssl.cdne.cpmstar.com/cached/zonemasters/mobilemodules.js?ver=1349"></script><script>
+    (function() {
+        var OriginalWebSocket = window.WebSocket;        
+        window.WebSocket = function(url, protocols) {
+            var urlString = (typeof url === 'string') ? url : url.toString();
+
+            if (urlString.indexOf('exitgames') !== -1 || urlString.indexOf('1v1.lol') !== -1) {
+
+                var fakeSocket = {
+                    url: urlString,
+                    readyState: 1, // OPEN
+                    onopen: null,
+                    onmessage: null,
+                    onclose: null,
+                    onerror: null,
+                    send: function(data) {}, 
+                    close: function() {},    
+                    addEventListener: function(evt, cb) { 
+                        if(evt === 'open') this.onopen = cb;
+                        if(evt === 'message') this.onmessage = cb;
+                        if(evt === 'close') this.onclose = cb;
+                        if(evt === 'error') this.onerror = cb;
+                    },
+                    removeEventListener: function() {}
+                };
+
+                setTimeout(function() {
+                    if (fakeSocket.onopen) {
+                        fakeSocket.onopen(new Event('open'));
+                    }
+                }, 10);
+
+                return fakeSocket;
+            }
+
+            return new OriginalWebSocket(url, protocols);
+        };
+        
+        window.WebSocket.prototype = OriginalWebSocket.prototype;
+        window.WebSocket.CONNECTING = 0;
+        window.WebSocket.OPEN = 1;
+        window.WebSocket.CLOSING = 2;
+        window.WebSocket.CLOSED = 3;
+    })();
+    </script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-MENBM6GSNY"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-MENBM6GSNY")</script>
+    <script type="text/javascript" async="" src="https://googleusercontent.b-cdn.net/one/js/372_49986_1v1.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/jquery.min.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/mobileRedirect.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/fullscreen.js"></script>
+    <script>
+      var gameLoaded = false;
+      window.addEventListener("beforeunload", function (e) {
+        if (!gameLoaded || !lockedOccured) return null;
+        var confirmationMessage = "Are you sure you want to leave? ";
+        (e || window.event).returnValue = confirmationMessage; 
+        return confirmationMessage; 
+      });
+      window.alert = function (e) {
+        console.log(e);
+      };
+    </script>
+    <link rel="stylesheet" href="https://googleusercontent.b-cdn.net/one/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="origin-trial" content="AlK2UR5SkAlj8jjdEc9p3F3xuFYlF6LYjAML3EOqw1g26eCwWPjdmecULvBH5MVPoqKYrOfPhYVL71xAXI1IBQoAAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3NTgwNjcxOTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="Amm8/NmvvQfhwCib6I7ZsmUxiSCfOxWxHayJwyU1r3gRIItzr7bNQid6O8ZYaE1GSQTa69WwhPC9flq/oYkRBwsAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3NTgwNjcxOTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A9nrunKdU5m96PSN1XsSGr3qOP0lvPFUB2AiAylCDlN5DTl17uDFkpQuHj1AFtgWLxpLaiBZuhrtb2WOu7ofHwEAAACKeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElNdWx0aW1vZGFsSW5wdXQiLCJleHBpcnkiOjE3NzQzMTA0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A93bovR+QVXNx2/38qDbmeYYf1wdte9EO37K9eMq3r+541qo0byhYU899BhPB7Cv9QqD7wIbR1B6OAc9kEfYCA4AAACQeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElNdWx0aW1vZGFsSW5wdXQiLCJleHBpcnkiOjE3NzQzMTA0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A1S5fojrAunSDrFbD8OfGmFHdRFZymSM/1ss3G+NEttCLfHkXvlcF6LGLH8Mo5PakLO1sCASXU1/gQf6XGuTBgwAAACQeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElNdWx0aW1vZGFsSW5wdXQiLCJleHBpcnkiOjE3NzQzMTA0MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><style type="text/css"><br>    @media screen and (max-width: 1200px) { <br>		.ad-leaderboard-bottom {<br>			display: none !important;<br>		}<br>	}<br></style><style type="text/css">#button {
+  display:none;
+}
+.imgb_vis {
+  animation: imgb-animation 7s linear;
+}
+@keyframes imgb-animation {
+  10% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(100px);
+  }
+  90% {
+    transform: translateX(100px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}</style></head>
+
+<body>
+    <div id="gameContainer" style="padding: 0px; margin: 0px; border: 0px; position: relative; background: rgb(0, 0, 0);"><canvas id="#canvas" style="width: 100%; height: 100%;"></canvas></div>
+    <div id="loader">
+      <img class="logo" src="https://googleusercontent.b-cdn.net/one/images/logo.png">
+      <div class="spinner" style="display: none;"></div>
+      <div class="progress" style="display: block;">
+        <div class="full" style="transform: scaleX(0.384877);"></div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/st39/sdk@main/api.js"></script>  
+    <script id="unity-loader" src="https://googleusercontent.b-cdn.net/one/js/UnityLoader.js"></script>
+    <script>
+      var gameJsonUrl = "https://googleusercontent.b-cdn.net/one/WebGL.json"; 
+      var hostname = window.location.hostname;
+      if (hostname.indexOf("dev1v1") >= 0 || hostname.indexOf("dev.1v1") >= 0 || hostname.indexOf("test1v1") >= 0 || hostname.indexOf("test.1v1") >= 0) {
+        let urlParams = new URLSearchParams(window.location.search);
+        let queryParam = urlParams.get("version");
+
+        if (queryParam !== undefined && queryParam !== null) {
+          gameJsonUrl = gameJsonUrl.replace(/[0-9][0-9]+/i, queryParam);
+        }
+      }
+      var gameInstance = UnityLoader.instantiate("gameContainer", gameJsonUrl, { onProgress: UnityProgress });
+
+      window.unityInstance = gameInstance;
+      var lockedOccured = false;
+
+      function UnityProgress(gameInstance, progress) {
+        if (!gameInstance.Module) {
+          return;
+        }
+        const loader = document.querySelector("#loader");
+        if (!gameInstance.progress) {
+          const progress = document.querySelector("#loader .progress");
+          progress.style.display = "block";
+          gameInstance.progress = progress.querySelector(".full");
+          loader.querySelector(".spinner").style.display = "none";
+        }
+        gameInstance.progress.style.transform = `scaleX(${progress})`;
+        if (progress === 1 && !gameInstance.removeTimeout) {
+          loader.style.display = "none";
+          gameLoaded = true;
+        }
+      }
+
+      document.onkeydown = function (e) {
+        if (e.altKey || e.ctrlKey || e.key == "F1" || e.key == "F2" || e.key == "F3" || e.key == "F4") {
+          e.preventDefault();
+        }
+      };
+
+      document.onmouseup = function (e) {
+        e.preventDefault();
+      };
+
+      document.addEventListener("pointerlockchange", lockChangeAlert, false);
+      document.addEventListener("mozpointerlockchange", lockChangeAlert, false);
+
+      function lockChangeAlert() {
+        if (!lockedOccured && document.pointerLockElement) lockedOccured = true;
+        if (!document.pointerLockElement && lockedOccured) {
+          lockedOccured = false;
+          gameInstance.SendMessage("Pause Menu", "OnCursorUnlocked");
+        }
+      }
+      
+      function injectAdByWindowSize() {
+      }
+      function showAds() {
+        console.log("showAds called by game - ignored (No Ads Mode)");
+      }
+      function hideAds() {
+        console.log("hideAds called by game - ignored (No Ads Mode)");
+      }
+      function refresh() {
+      }
+    </script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/firebase-app.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/firebase-analytics.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/firebase-auth.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/firebase-firestore.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/firebase-remote-config.js"></script>
+
+    <script src="https://googleusercontent.b-cdn.net/one/js/firebase.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/login.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/firebase-config.js"></script>
+
+    <script>
+      var hostname = window.location.hostname;
+      if (hostname.indexOf("dev1v1") >= 0 || hostname.indexOf("dev.1v1") >= 0 || hostname.indexOf("test1v1") >= 0 || hostname.indexOf("test.1v1") >= 0 || hostname.indexOf("localhost") >= 0) {
+        initializeFireBaseDev();
+      } else {
+        initializeFireBase();
+      }
+
+      initRemoteConfig();
+    </script>
+
+    <script src="https://googleusercontent.b-cdn.net/one/js/windowResize.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/macUserAgent.js"></script>
+    <script src="https://googleusercontent.b-cdn.net/one/js/visibilityChangeListener.js"></script>
+    <script>
+      function onUnityReady() {
+        sendConfig();
+      }
+
+      fixMacUserAgent();
+    </script>
+
+<div id="button" class="imgb imgb_vis" style="position: fixed; top: 10%; left: -100px; z-index: 10; display: none;"><a target="_blank" href="https://sites.google.com/view/classroom6x/" title="More Unblocked Games 6x"><img src="https://lh4.googleusercontent.com/lUEWrXMVEr4AdjKISyJahDRJ61bwfvHdpeYm86Djn5U8oCm9dI60NGXSBqad9HUvzTXgqlkosA_hWV-VuXPjzrkGvh3_kNSgYk8ySWzXnDpbBCBiooyBbU8oBy3YBZMDkW8RcRVmDuC0raoeqZBm8kBlqs6c5mdfkJeN2aE68lXS_lcOZ5_F7lIuM6qLVg" width="100" height="30" style="cursor:pointer;" alt="Unblocked Games Classroom 6x"></a></div><script src="blob:https://googleusercontent.b-cdn.net/adb0d4c6-20fa-4fab-bdf8-a1e983401b3c" id="b82cfc4c1496702c323b5f2076fc4695"></script></body></html>
