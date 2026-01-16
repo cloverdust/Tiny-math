@@ -1,140 +1,34 @@
-clbaldisbasicsremaster.html
-
-Page
-1
-/
-1
-100%
-<!-- Ultimate Game Stash file--> 
-<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
-
-<!DOCTYPE html>
-<html lang="en-us">
-
-<head>
-    <base href="https://cdn.jsdelivr.net/gh/genizy/web-port@main/baldi-remaster/">
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Baldi's Basics Classic Remastered</title>
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background: #231F20;
-        }
-
-        #unity-canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-    </style>
-</head>
-
+<html><head>
+<link rel="stylesheet" href="https://rawcdn.githack.com/usernamegth/diamondmine/ce3f014d7468d26e578a23de7773ddeb4f40b24f/gs/gsfiles/basics/TemplateData/style.css">
+<style type="text/css">#button {
+  display:none;
+}
+.imgb_vis {
+  animation: imgb-animation 7s linear;
+}
+@keyframes imgb-animation {
+  10% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(100px);
+  }
+  90% {
+    transform: translateX(100px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}</style></head>
 <body>
-    <div id="loading-text" style="color: white; font-size: 48px; font-family: cursive; text-align: center; margin-top: 20px;"> LOADING... </div>
-    <canvas id="unity-canvas" tabindex="-1"></canvas>
-    <script src="Build/WebGL.loader.js"></script>
+<script src="https://rawcdn.githack.com/usernamegth/diamondmine/ce3f014d7468d26e578a23de7773ddeb4f40b24f/gs/gsfiles/basics/TemplateData/UnityProgress.js"></script>
+    <script src="https://rawcdn.githack.com/usernamegth/diamondmine/ce3f014d7468d26e578a23de7773ddeb4f40b24f/gs/gsfiles/basics/baldi.js"></script>
     <script>
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            var meta = document.createElement('meta');
-            meta.name = 'viewport';
-            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-            document.getElementsByTagName('head')[0].appendChild(meta);
-        }
-        const loadingText = document.querySelector("#loading-text");
-        let totalBytes = 0;
-        let loadedBytes = 0;
-
-        function formatSize(bytes) {
-            if (bytes > 1024 * 1024 * 1024) {
-                return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
-            } else if (bytes > 1024 * 1024) {
-                return (bytes / (1024 * 1024)).toFixed(2) + " MB";
-            } else if (bytes > 1024) {
-                return (bytes / 1024).toFixed(2) + " KB";
-            } else {
-                return bytes + " B";
-            }
-        }
-        async function getSize(url) {
-            try {
-                const res = await fetch(url, {
-                    method: "HEAD"
-                });
-                return parseInt(res.headers.get("Content-Length") || "0", 10);
-            } catch {
-                return 0;
-            }
-        }
-        async function fetchWithProgress(url) {
-            const response = await fetch(url);
-            const reader = response.body.getReader();
-            let chunks = [];
-            let received = 0;
-            while (true) {
-                const {
-                    done,
-                    value
-                } = await reader.read();
-                if (done) break;
-                received += value.length;
-                loadedBytes += value.length;
-                chunks.push(value);
-                const doneText = formatSize(loadedBytes);
-                const totalText = formatSize(totalBytes);
-                const percent = totalBytes > 0 ? ((loadedBytes / totalBytes) * 100).toFixed(1) : "?";
-                loadingText.textContent = `LOADING... ${doneText} / ${totalText} (${percent}%)`;
-            }
-            let fullBuffer = new Uint8Array(received);
-            let offset = 0;
-            for (let chunk of chunks) {
-                fullBuffer.set(chunk, offset);
-                offset += chunk.length;
-            }
-            return fullBuffer.buffer;
-        }
-        async function mergeFiles(parts) {
-            const buffers = await Promise.all(parts.map(fetchWithProgress));
-            return URL.createObjectURL(new Blob(buffers));
-        }
-
-        function getParts(file, count) {
-            let parts = [];
-            for (let i = 1; i <= count; i++) {
-                parts.push(file + ".part" + i);
-            }
-            return parts;
-        }
-        (async () => {
-            const dataParts = getParts("Build/WebGL.data", 3);
-            const wasmParts = getParts("Build/WebGL.wasm", 3);
-            const allParts = [...dataParts, ...wasmParts];
-            const sizes = await Promise.all(allParts.map(getSize));
-            totalBytes = sizes.reduce((a, b) => a + b, 0);
-            const [dataUrl, wasmUrl] = await Promise.all([
-                mergeFiles(dataParts),
-                mergeFiles(wasmParts)
-            ]);
-            createUnityInstance(document.querySelector("#unity-canvas"), {
-                dataUrl: dataUrl,
-                frameworkUrl: "Build/WebGL.framework.js",
-                codeUrl: wasmUrl,
-                streamingAssetsUrl: "StreamingAssets",
-                companyName: "Basically Games",
-                productName: "Baldi's Basics Classic Remastered",
-                productVersion: "1.1",
-            }).then(() => {
-                loadingText.remove();
-            });
-        })();
+      var gameInstance = UnityLoader.instantiate("gameContainer", "https://rawcdn.githack.com/usernamegth/diamondmine/ce3f014d7468d26e578a23de7773ddeb4f40b24f/gs/gsfiles/basics/baldi.json", {onProgress: UnityProgress,Module:{onRuntimeInitialized: function() {UnityProgress(gameInstance, "complete")}}});
     </script>
-</body>
+	<script src="https://cdn.jsdelivr.net/gh/st39/sdk@main/api.js"></script>
+    <div class="webgl-content">
+        <div id="gameContainer" style="width: 100vw; height: 100vh; padding: 0px; margin: 0px; border: 0px; position: relative; background: rgb(0, 0, 0);"><canvas id="#canvas" style="cursor: url(&quot;data:image/cur;base64,AAACAAEAQEAAAAAAAAAoQAAAGAAAAAAAKAAAAEAAAACAAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUAYanAAGGpwABhqcAAYanAAGGpwABhqcAAYanAAGGpwABhqcAAYanAAGGpwABKgpUASoKVACtMWAArTFgASoKVAEqClQArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWABKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAGGpwABhqcAAYanAAGGpwABhqcAAYanAAGGpwABhqcAAYanAAGGpwABhqcAASoKVAEqClQArTFgAK0xYAEqClQBKgpX/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBhqcAAYanAAGGpwABhqcAAYanAAGGpwABhqcAAYanAAGGpwABhqcAAYanAAEqClQBKgpX/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUAYanAAGGpwABhqcAAYanAAGGpwABhqcAAYanAAGGpwABhqcAAYanAAGGpwP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWABKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAGGpwABhqcAAYanAAGGpwABhqcAAYanAAGGpwABhqcAASoKVAEqClf8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBhqcAAYanAAGGpwABhqcAAYanAAGGpwABhqcAAYanA/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP9KgpX/K0xY/ytMWP8rTFj/SoKV/ytMWP8rTFj/K0xY/0qClf8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKV/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/0qClf8rTFj/SoKV/ytMWP9KgpX/SoKV/0qClf8rTFj/SoKV/0qClf8rTFj/SoKV/ytMWP9KgpX/K0xY/ytMWP8rTFj/K0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWABKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAGGpwABhqcAAYanAAGGpwABhqcAAYanA/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/SoKV/ytMWP9KgpX/K0xY/0qClf8rTFj/SoKV/0qClf8rTFj/SoKV/0qClf9KgpX/K0xY/0qClf8rTFj/SoKV/0qClf8rTFj/K0xY/ytMWP8rTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUAK0xYACtMWAArTFgAK0xYACtMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP9KgpX/K0xY/0qClf8rTFj/K0xY/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf8rTFj/SoKV/ytMWP8rTFj/K0xY/ytMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClf8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP9KgpX/K0xY/0qClf8rTFj/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/YanA/0qClf9KgpX/SoKV/0qClf8rTFj/SoKV/ytMWP8rTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWABKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClf8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP9KgpX/K0xY/0qClf8rTFj/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9hqcD/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf8rTFj/K0xY/ytMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClf9KgpUAK0xYACtMWP9KgpX/K0xY/ytMWP8rTFj/K0xY/0qClf8rTFj/SoKV/0qClf8rTFj/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/YanA/0qClf9KgpX/SoKV/0qClf9hqcD/SoKV/0qClf9KgpX/YanA/2GpwP9KgpX/SoKV/0qClf9KgpX/SoKV/ytMWP8rTFj/K0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYAEqClQBKgpUASoKVAEqClQBKgpUASoKV/ytMWP8rTFj/K0xY/ytMWP9KgpX/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9hqcD/SoKV/0qClf9KgpX/SoKV/0qClf9hqcD/SoKV/2GpwP9KgpX/SoKV/0qClf9KgpX/YanA/0qClf9KgpX/SoKV/0qClf9KgpX/K0xY/ytMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWABKgpUASoKVAEqClQBKgpX/SoKV/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/SoKV/0qClf8rTFj/SoKV/0qClf9KgpX/YanA/0qClf9KgpX/SoKV/0qClf9KgpX/YanA/0qClf9hqcD/YanA/0qClf9KgpX/YanA/2GpwP9KgpX/YanA/0qClf9hqcD/SoKV/2GpwP9KgpX/SoKV/0qClf8rTFj/K0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgASoKVAEqClQBKgpX/K0xY/ytMWP8rTFj/K0xY/ytMWP9KgpX/K0xY/ytMWP8rTFj/K0xY/ytMWP8rTFj/SoKV/ytMWP9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9hqcD/SoKV/2GpwP9hqcD/SoKV/0qClf9KgpX/YanA/0qClf9hqcD/YanA/2GpwP9KgpX/YanA/0qClf9hqcD/SoKV/0qClf9KgpX/K0xY/ytMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xYACtMWAArTFgAK0xY/ytMWP8rTFj/K0xY/ytMWP9KgpX/SoKV/ytMWP8rTFj/K0xY/ytMWP8rTFj/SoKV/ytMWP9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/YanA/0qClf9hqcD/YanA/0qClf9hqcD/SoKV/2GpwP9hqcD/YanA/2GpwP9hqcD/YanA/0qClf9hqcD/YanA/2GpwP9hqcD/SoKV/2GpwP9hqcD/SoKV/0qClf9KgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKV/ytMWP8rTFj/K0xY/0qClf9KgpX/SoKV/0qClf9KgpX/K0xY/ytMWP9KgpX/K0xY/ytMWP8rTFj/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/YanA/0qClf9hqcD/SoKV/0qClf9hqcD/SoKV/2GpwP9hqcD/YanA/2GpwP9KgpX/YanA/2GpwP9hqcD/SoKV/2GpwP9KgpX/SoKV/0qClf9KgpX/SoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUASoKVAEqClQBKgpUAK0xYACtMWP8rTFj/K0xY/ytMWP9KgpX/SoKV/0qClf9hqcD/YanA/ytMWP8rTFj/K0xY/ytMWP9KgpX/SoKV/0qClf9KgpX/SoKV/0qClf9KgpX/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cMTdAHDE3QBwxN0AcMTdACtMWAArTFgAK0xYACtMWAArTFgAK0xY/ytMWP8rTFj/SoKV/0qClf9KgpX/YanA/3DE3f9wxN3/cMTd/3DE3f8rTFj/K0xY/0qClf9KgpX/SoKV/2GpwP9hqcD/cMTd/3DE3f9wxN3/cMTd/3DE3f8rTFj/SoKV/0qClf9KgpX/YanA/2GpwP9wxN3/cMTd/3DE3f9wxN3/cMTd/2GpwP9hqcD/SoKV/2GpwP9hqcD/YanA/3DE3f9wxN3/YanA/3DE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBKgpUASoKVAEqClQBKgpUASoKVAEqClf8rTFj/K0xY/0qClf9KgpX/YanA/3DE3f9hqcD/cMTd/3DE3f9wxN3/K0xY/ytMWP9KgpX/YanA/2GpwP9hqcD/cMTd/3DE3f9wxN3/cMTd/3DE3f9wxN3/K0xY/0qClf9KgpX/YanA/2GpwP9wxN3/cMTd/3DE3f9wxN3/cMTd/3DE3f9wxN3/YanA/0qClQBhqcAAYanAAGGpwP9wxN0AcMTdAGGpwABwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AK0xYACtMWAArTFgAK0xYACtMWAArTFj/K0xY/ytMWP9KgpX/YanA/2GpwP9hqcD/cMTd/3DE3f9wxN3/cMTd/ytMWP8rTFj/SoKV/0qClf9hqcD/YanA/3DE3f9wxN3/cMTd/3DE3f9wxN3/cMTd/0qClf9KgpX/YanA/2GpwP9wxN3/cMTd/3DE3f9wxN3/cMTd/3DE3f9wxN3/YanA/2GpwP9hqcAAYanAAGGpwABhqcAAcMTdAHDE3QBhqcAAcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdAHDE3QBwxN0AcMTdACtMWAArTFgAK0xYACtMWAArTFgAK0xY/ytMWP9KgpX/SoKV/0qClf9hqcD/YanA/3DE3f9wxN3/cMTd/3DE3f9wxN3/K0xY/0qClf9hqcD/YanA/2GpwP9wxN3/cMTd/3DE3f9wxN3/cMTd/3DE3f8rTFj/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&quot;), default;" width="970" height="732"></canvas><div class="logo Dark" style="display: none;"></div><div class="progress Dark" style="display: none;"><div class="empty" style="width: 0%;"></div><div class="full" style="width: 100%;"></div></div></div>
+        </div>
 
-</html>
-Displaying clbaldisbasicsremaster.html.
+<div id="button" class="imgb imgb_vis" style="position: fixed; top: 10%; left: -100px; z-index: 10; display: none;"><a target="_blank" href="https://sites.google.com/view/classroom6x/" title="More Unblocked Games 6x"><img src="https://lh4.googleusercontent.com/lUEWrXMVEr4AdjKISyJahDRJ61bwfvHdpeYm86Djn5U8oCm9dI60NGXSBqad9HUvzTXgqlkosA_hWV-VuXPjzrkGvh3_kNSgYk8ySWzXnDpbBCBiooyBbU8oBy3YBZMDkW8RcRVmDuC0raoeqZBm8kBlqs6c5mdfkJeN2aE68lXS_lcOZ5_F7lIuM6qLVg" width="100" height="30" style="cursor:pointer;" alt="Unblocked Games Classroom 6x"></a></div><script src="blob:null/ef012be2-838c-4df8-b6da-1e648003c563"></script></body></html>
