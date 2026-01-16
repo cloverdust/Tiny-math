@@ -15,34 +15,134 @@
 </head>
 <body>
 
-<h1>My Games</h1>
+<h1>Tinymath</h1>
 
 <div id="buttons"></div>
-
 <script>
-  // ⭐ SUPER EASY BUTTON MAKER ⭐
-  function add(name, url) {
-    const b = document.createElement("button");
-    b.textContent = name;
-    b.onclick = async () => {
-      const html = await (await fetch(url)).text();
-      document.open();
-      document.write(html);
-      document.close();
-    };
-    document.getElementById("buttons").appendChild(b);
+  // ⭐ BUTTON MAKER WITH OPTIONAL IMAGES ⭐
+  function add(name, url, img = null) {
+    const wrapper = document.createElement("div");
+    wrapper.style.display = "inline-block";
+    wrapper.style.margin = "15px";
+    wrapper.style.textAlign = "center";
+
+    // If user provides an image, show it
+    if (img) {
+      const image = document.createElement("img");
+      image.src = img;
+      image.style.width = "150px";
+      image.style.height = "150px";
+      image.style.objectFit = "cover";
+      image.style.borderRadius = "10px";
+      image.style.cursor = "pointer";
+      image.style.display = "block";
+      image.style.marginBottom = "8px";
+      image.onclick = () => loadGame(url);
+      wrapper.appendChild(image);
+    }
+
+    // Button
+    const button = document.createElement("button");
+    button.textContent = name;
+    button.onclick = () => loadGame(url);
+    wrapper.appendChild(button);
+
+    document.getElementById("buttons").appendChild(wrapper);
+  }
+
+  // ⭐ LOAD GAME WITHOUT BREAKING ANYTHING ⭐
+  function loadGame(url) {
+    fetch(url)
+      .then(r => r.text())
+      .then(html => {
+        const header = `
+          <div style="
+            width:100%;
+            padding:15px;
+            background:#222;
+            color:white;
+            font-size:24px;
+            text-align:center;
+            position:fixed;
+            top:0;
+            left:0;
+            z-index:9999;
+          ">
+            ⭐ Tiny Math ⭐
+            <button onclick="document.documentElement.requestFullscreen()" 
+              style="
+                float:right;
+                margin-right:20px;
+                padding:8px 15px;
+                background:#1e90ff;
+                border:none;
+                border-radius:5px;
+                color:white;
+                cursor:pointer;
+              ">
+              Fullscreen
+            </button>
+          </div>
+          <div style="height:70px;"></div>
+        `;
+
+        // Write header + game HTML exactly like your original script
+        document.open();
+        document.write(header + html);
+        document.close();
+      });
   }
 
   // ⭐ ADD YOUR GAMES HERE ⭐
-  add("1v1.lol", "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/1v1.lol/1v1.lol.html");
-    add("2048", "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/2048/index.html");
-    add("Baldi Basics", "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Baldi%20basics/index.html");
+  add("1v1.lol",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/1v1.lol/1v1.lol.html",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/1v1.lol/image.png");
 
+  add("2048",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/2048/index.html",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/2048/image.png");
 
-  // Example:
-  // add("Tiny Math", "https://raw.githubusercontent.com/.../index.html");
-  // add("Snake", "https://example.com/snake.html");
+  add("Baldi Basics",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Baldi%20basics/index.html",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Baldi%20basics/image.png");
+      
+      add("Baseball Bros",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Baseball%20Bros/index.html",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Baseball%20Bros/image.png");
+      
+      add("Basket random",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Basket%20random/index.html",
+      "https://th.bing.com/th/id/OIP.hoTOxtCHHkYByS0KvaBQNgAAAA?w=108&h=108&c=1&bgcl=9f6f23&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3");
+       
+      add("Boxing random",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Boxing%20random/index.html",
+      "https://th.bing.com/th/id/OIP.phSj19tRWXMQnoeQDKjs2gAAAA?w=128&h=108&c=7&qlt=90&bgcl=6c7f6e&r=0&o=6&dpr=1.3&pid=13.1");
+      
+      add("BTD",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/BTD/index.html",
+      "https://th.bing.com/th/id/OIP.1Wil_jitmqYPzk9EFANMoAAAAA?w=108&h=108&c=1&bgcl=d8a948&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3");
+      
+      add("BTD2",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/BTD%202/index.html",
+      "https://th.bing.com/th/id/OIP.vi0M6YxijIN7kf1ZKH5A6QHaEk?w=108&h=108&c=1&bgcl=9ec118&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3");
+      
+      add("BTD3",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/BTD%203/index.html",
+      "https://th.bing.com/th/id/OIP.vi0M6YxijIN7kf1ZKH5A6QHaEk?w=108&h=108&c=1&bgcl=9ec118&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3");
+      
+      add("BTD4",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/BTD%203/index.html",
+      "https://th.bing.com/th/id/OIP.vi0M6YxijIN7kf1ZKH5A6QHaEk?w=108&h=108&c=1&bgcl=9ec118&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3");
+      
+      add("Cookie clicker",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Cookie%20Clicker/index.html",
+      "https://th.bing.com/th/id/OSK.rAIEjutYW25Dw4vY0SLcz-7bZ4BW-zzFiuqvXiu-Hqw?w=50&h=50&c=12&o=6&dpr=1.3&pid=SANGAM");
+      
+      add("Drift Boss",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Drift%20boss/index.html",
+      "https://th.bing.com/th/id/OIP.8TYulLLsPB9Mg-xt477LoQHaHa?w=108&h=108&c=1&bgcl=e55e49&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3");
+      
+      add("Drive mad",
+      "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Drive%20mad/index.html",
+      "https://th.bing.com/th/id/OIP.A59clITX9HQPunpR3Rj9uAHaD4?w=108&h=108&c=1&bgcl=f04aef&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3");
 </script>
-
-</body>
-</html>
