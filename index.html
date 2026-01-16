@@ -1,114 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Tiny Math</title>
-<style>
-  body {
-    background: #0f172a;
-    color: #e2e8f0;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  /* TITLE */
-  #title {
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
-    color: #fbbf24;
-    text-shadow: 0 0 10px rgba(251,191,36,0.6);
-  }
-
-  /* BUTTON ROW */
-  #buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-    justify-content: center;
-  }
-
-  .fetchBtn {
-    border: none;
-    background: none;
-    cursor: pointer;
-  }
-
-  .fetchBtn img {
-    width: 150px;
-    border-radius: 10px;
-    border: 2px solid #334155;
-    transition: 0.2s;
-  }
-
-  .fetchBtn img:hover {
-    transform: scale(1.05);
-    border-color: #fbbf24;
-  }
-
-  #frame {
-    flex: 1;
-    background: #1e293b;
-    border-radius: 10px;
-    border: 2px solid #334155;
-    padding: 10px;
-    overflow: auto;
-    display: none; /* hidden until clicked */
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Game Loader</title>
+  <style>
+    body { background:#111; color:#fff; font-family:Arial; text-align:center; }
+    h1 { margin-top:20px; }
+    button {
+      padding:10px 20px; margin:10px; font-size:16px;
+      background:#1e90ff; border:none; border-radius:5px; color:white; cursor:pointer;
+    }
+    button:hover { background:#0f6ed6; }
+  </style>
 </head>
 <body>
 
-<div id="title">Tiny Math</div>
+<h1>My Games</h1>
 
-<div id="buttons">
-
-  <button class="fetchBtn" data-url="https://example.com/page1.html">
-    <img src="IMAGE1.png">
-  </button>
-
-  <button class="fetchBtn" data-url="https://raw.githubusercontent.com/cloverdust/cloverdust.github.io/refs/heads/main/index.html">
-    <img src="IMAGE2.png">
-  </button>
-
-  <button class="fetchBtn" data-url="https://example.com/page3.html">
-    <img src="IMAGE3.png">
-  </button>
-
-</div>
-
-<div id="frame"></div>
+<div id="buttons"></div>
 
 <script>
-document.querySelectorAll(".fetchBtn").forEach(btn => {
-  btn.onclick = async () => {
-    const url = btn.dataset.url;
-    const frame = document.getElementById("frame");
+  // ⭐ SUPER EASY BUTTON MAKER ⭐
+  function add(name, url) {
+    const b = document.createElement("button");
+    b.textContent = name;
+    b.onclick = async () => {
+      const html = await (await fetch(url)).text();
+      document.open();
+      document.write(html);
+      document.close();
+    };
+    document.getElementById("buttons").appendChild(b);
+  }
 
-    try {
-      const response = await fetch(url);
-      const html = await response.text();
+  // ⭐ ADD YOUR GAMES HERE ⭐
+  add("1v1.lol", "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/1v1.lol/1v1.lol.html");
+    add("2048", "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/2048/index.html");
+    add("Baldi Basics", "https://raw.githubusercontent.com/cloverdust/Tiny-math/refs/heads/main/Baldi%20basics/index.html");
 
-      frame.style.display = "block";  // show frame
-      frame.innerHTML = html;         // insert HTML
 
-      // run scripts inside fetched HTML
-      frame.querySelectorAll("script").forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) newScript.src = oldScript.src;
-        else newScript.textContent = oldScript.textContent;
-        oldScript.replaceWith(newScript);
-      });
-
-    } catch (err) {
-      frame.style.display = "block";
-      frame.innerHTML = "<p>Error loading content.</p>";
-    }
-  };
-});
+  // Example:
+  // add("Tiny Math", "https://raw.githubusercontent.com/.../index.html");
+  // add("Snake", "https://example.com/snake.html");
 </script>
 
 </body>
