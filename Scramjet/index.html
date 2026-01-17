@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ScramjetExample Full Loader</title>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+const baseFolder = "https://cdn.jsdelivr.net/gh/stackoverblow/ScramjetExample@master/public/";
+const fileList = ["index.html", "index.js", "sw.js"]; // Add more if needed
+
+async function loadAll() {
+  for (const file of fileList) {
+    const url = baseFolder + file;
+    const ext = file.split(".").pop();
+
+    const content = await fetch(url).then(r => r.text());
+
+    if (ext === "html") {
+      document.getElementById("app").innerHTML = content;
+    }
+
+    if (ext === "css") {
+      const style = document.createElement("style");
+      style.textContent = content;
+      document.head.appendChild(style);
+    }
+
+    if (ext === "js") {
+      const script = document.createElement("script");
+      script.textContent = content;
+      document.body.appendChild(script);
+    }
+  }
+}
+
+loadAll();
+</script>
+
+</body>
+</html>
