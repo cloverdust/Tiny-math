@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ultraviolet Proxy</title>
+</head>
+<body>
+
+<input id="url" placeholder="Enter URL" style="width:80%;padding:10px;">
+<button onclick="go()">Go</button>
+
+<script src="uv.bundle.js"></script>
+<script src="uv.config.js"></script>
+<script src="uv.client.js"></script>
+
+<script>
+  const uv = new UVServiceWorker();
+
+  // Correct path for CodeHS
+  uv.registerSW("./uv.sw.js");
+
+  function go() {
+    const input = document.getElementById("url").value;
+    const encoded = uv.encodeUrl(input);
+    window.location.href = encoded;
+  }
+</script>
+
+</body>
+</html>
