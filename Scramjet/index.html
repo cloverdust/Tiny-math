@@ -2,21 +2,23 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ScramjetExample Full Loader</title>
+  <title>ScramjetExample Loader</title>
 </head>
 <body>
 
 <div id="app"></div>
 
 <script>
-const baseFolder = "https://cdn.jsdelivr.net/gh/stackoverblow/ScramjetExample@master/public/";
-const fileList = ["index.html", "index.js", "sw.js"]; // Add more if needed
+const files = [
+  "https://cdn.jsdelivr.net/gh/stackoverblow/ScramjetExample@master/index.js",
+  "https://cdn.jsdelivr.net/gh/stackoverblow/ScramjetExample@master/public/index.html",
+  "https://cdn.jsdelivr.net/gh/stackoverblow/ScramjetExample@master/public/index.js",
+  "https://cdn.jsdelivr.net/gh/stackoverblow/ScramjetExample@master/public/sw.js"
+];
 
 async function loadAll() {
-  for (const file of fileList) {
-    const url = baseFolder + file;
-    const ext = file.split(".").pop();
-
+  for (const url of files) {
+    const ext = url.split(".").pop();
     const content = await fetch(url).then(r => r.text());
 
     if (ext === "html") {
