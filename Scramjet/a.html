@@ -1,0 +1,112 @@
+<link rel="stylesheet" href = "/assets/css/style.css">
+<link rel="stylesheet" href = "/assets/css/apps.css">
+
+<div class = "hidden" id="content">
+  <form class="hidden"id="uv-form"">
+     <input id="uv-search-engine" value="https://www.google.com/search?q=%s" class="hidden"/> 
+     <input id="uv-address" type="text" placeholder="URL or browse the web!" class="form__input"/>
+   </form>
+   <div class="desc left-margin">
+     <p id="uv-error"></p>
+     <pre id="uv-error-code"></pre>
+   </div>
+  </div>
+   <center>
+    <!--turning these into js soon.-->
+    <h1>Apps not working? Clear Cache</h1>
+    <h1 onclick="launchURL('play.geforcenow.com/games?game-id=46bfab06-d864-465d-9e56-2d9e45cdee0a&lang=en_US&asset-id=01_7075facc-4c99-4daf-9c71-cbc02ce58386')">Fortnite</h1>
+
+    <h1 onclick="launchURL('google.com')">Google</h1>
+    <h1 onclick="launchURL('discord.com/login')">Discord</h1>
+    <h1 onclick="launchURL('Youtube.com')">Youtube</h1>
+    <h1 onclick="launchURL('reddit.com')">Reddit</h1>
+    <h1 onclick="launchURL('twitch.tv')">Twitch</h1>
+    <h1 onclick="launchURL('janitorai.com')">Character AI Alternative</h1>
+    <h1 onclick="launchURL('spotify.com')">Spotify</h1>
+    <h1 onclick="launchURL('sandboxels.r74n.com/')">Sandboxels</h1>
+    
+    <h1 onclick="launchURL('startpage.com')">Start Page</h1>
+
+    <h1 onclick="launchURL('shuttletv.net/')">Shuttle TV</h1>
+    <h1 onclick="launchURL('tiktok.com')">Tiktok</h1>
+    <h1 onclick="launchURL('twitter.com')">Twitter</h1>
+    <h1 onclick="launchURL('crazygames.com')">Crazy Games</h1>
+    <h1 onclick="launchURL('web.libretro.com/')">Retroarch</h1>
+    <h1 onclick="launchURL('kdata1.com/2021/03/3527391/2.1/')">Pizza Tower</h1>
+
+
+
+
+    <h1 onclick="launchURL('chat.chatgptdemo.net')">Chat GPT</h1>
+    <h1 onclick="launchURL('flixtor.id/')">Flixtor (free movies)</h1>
+    <h1 onclick="launchURL('aniwatch.to')">Anime</h1>
+    <h1 onclick="launchURL('schoolcheats.net/')">School Cheats</h1>
+    <h1 onclick="launchURL('kahoot.club/')">Kahoot Rocks</h1>
+<!--
+    <br><br><br>
+    <br>
+    <h1>Made possible by VyperGroup</h1>
+    <h1 onclick="launchURL('https://nowgg.nl/play/roblox-corporation/5349/roblox')">Roblox</h1>
+    <h1 onclick="launchURL('nowgg.nl/play/paradyme-games/2629/solar-smash')">Solar Smash</h1>
+    <h1 onclick = "launchURL('https://nowgg.nl/play/proxima-beta/2609/pubg-mobile-resistance')">PUBG Mobile</h1>
+<br>-->
+<br>
+<br>
+<!--shd i talk to my crush?-->
+    <h1 onclick="launchURL('mathdrills.life/')">Shell Shockers</h1>
+    <h1 onclick="launchURL('stumbleguys.com/play')">Stumble Guys</h1>
+    <h1 onclick="launchURL('frivwtf.com/games/buildnow-gg/index.html')">Build Now GG</h1>
+    <h1 onclick="launchURL('pmotschmann.github.io/Evolve/')">Evolve Incremental</h1>
+    <h1 onclick="launchURL('pokebox.net/')">Pokebox</h1>
+    <h1 onclick="launchURL('sandspiel.club/')">Sandspiel</h1>
+    <h1 onclick="launchURL('evoworld.io/')">Fly Or Die.io</h1>
+    <h1 onclick="launchURL('cowordle.org')">Co Wordle</h1>
+    <h1 onclick="launchURL('play.geforcenow.com')">Geforce Now</h1>
+    <h1 onclick="launchURL('xbox.com/en-US/cloud-gaming')">XBOX Cloud Gaming</h1>
+    <h1 onclick="launchURL('taming.io/')">Taming.IO</h1>
+
+
+   </center>
+<!--Makes the search bar hidden because launch URl loads it on the searchbar.--> 
+<style>
+  .hidden {
+  display: none;
+}
+  h1{
+    cursor:pointer;
+  }
+  
+.form__input {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 300px;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  background-color: #222;
+  text-align: center;
+  color: #fff;
+  cursor:cell;
+}
+
+.form__input::placeholder {
+  color: #aaa;
+  text-align: center;
+}
+
+.form_input:hover{
+  cursor:cell;
+}
+
+.form__input:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+</style>
+<script src="uv/uv.bundle.js" defer></script>
+<script src="uv/uv.config.js" defer></script>
+<script src="register-sw.js" defer></script>
+<script src="search.js" defer></script>
+<script src="index.js" defer></script>
