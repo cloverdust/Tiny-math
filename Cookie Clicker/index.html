@@ -1,273 +1,826 @@
 
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>"/> </head>
+<meta name="description" content="Why download games while you have tinymath? Tinymath give a superior number of your favorite games like retro bowl and many others.">
+<!DOCTYPE html>
 <html>
-  <base href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/cookieclicker/">
 <head>
-<!-- external -->
+  <meta charset="UTF-8">
+  <title>TinyMath</title>
 
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
 
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+    h1 {
+      margin: 25px 0 10px;
+      font-size: 36px;
+      letter-spacing: 1px;
+    }
 
-<!--<link href="https://fonts.googleapis.com/css?family=Kavoon&subset=latin,latin-ext" rel="stylesheet" type="text/css">-->
-<link href='https://fonts.googleapis.com/css?family=Merriweather:900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    /* Search bar */
+    #searchBar {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      margin-bottom: 20px;
+    }
 
-<!-- Facebook Pixel Code --> 
-	<script>
-	!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-	n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-	n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-	t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-	document,'script','https://connect.facebook.net/en_US/fbevents.js');
-	fbq('init', '357399801355203');
-	fbq('track', 'PageView');
-	</script>
-	<noscript><img height="1" width="1" style="display:none"
-	src="https://www.facebook.com/tr?id=357399801355203&ev=PageView&noscript=1"></noscript>
-<!-- end code -->
-<!-- /external -->
+    #buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      padding: 20px;
+    }
 
-<title>Cookie Clicker</title>
-<!--
-Code and graphics copyright Orteil, 2013-2023
-Feel free to alter this code to your liking, but please do not re-host it, do not profit from it and do not present it as your own.
--->
+    .game-card {
+      width: 170px;
+      text-align: center;
+    }
 
-<meta name="viewport" content="width=900, initial-scale=1">
-<link rel="shortcut icon" href="img/favicon.ico" />
-<script src="base64.js"></script>
+    .game-card img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
 
-<script>
-var VERSION=2.052;
-var BETA=0;
-var App=typeof App==='undefined'?0:App;
-</script>
+    .game-card img:hover {
+      transform: scale(1.05);
+    }
 
-<link href="style.css?v=9" rel="stylesheet" type="text/css">
-<script  src="main.js?v=10"></script>
+    .game-card button {
+      width: 150px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      background: #1e90ff;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
 
-<!-- ad -->
-<script src="showads.js"></script><!-- this just detects adblockers so we can adjust the layout and play nice -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: "ca-pub-8491708950677704",
-          enable_page_level_ads: true
-     });
-</script>
-<!-- /ad -->
+    .game-card button:hover {
+      background: #0f6ed6;
+    }
 
-<!--[if IE]>
-<style type="text/css">
-	#ifIE9{display:block;}
-</style>
-<![endif]-->
+   
+    .game-header {
+      width: 100%;
+      padding: 15px;
+      background: #222;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+    }
 
-<!--[if lt IE9]><script src="excanvas.compiled.js"></script><![endif]-->
+    .fullscreen-btn,
+    .exit-btn {
+      float: right;
+      margin-right: 20px;
+      padding: 8px 15px;
+      background: #1e90ff;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .fullscreen-btn:hover,
+    .exit-btn:hover {
+      background: #0f6ed6;
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="wrapper">
+<h1>TinyMath</h1>
 
-	<div id="topBar">
-		<div><b style="font-weight:bold;">Cookie Clicker</b>&trade; &copy; <a href="//orteil.dashnet.org" target="_blank" id="topbarOrteil">Orteil</a>, 2023 - <a href="//dashnet.org" target="_blank" id="topbarDashnet">DashNet</a></div>
-		<div><a href="https://twitter.com/orteil42" target="_blank" id="topbarTwitter">twitter</a></div>
-		<div><a href="https://orteil42.tumblr.com" target="_blank" id="topbarTumblr">tumblr</a></div>
-		<div style="position:relative;"><div style="width:22px;height:32px;background:url(img/discord.png);position:absolute;left:0px;top:0px;pointer-events:none;"></div><a href="https://discordapp.com/invite/cookie" target="_blank" style="padding-left:16px;" id="topbarDiscord">Discord</a></div>
-		<div style="position:relative;"><div style="width:25px;height:32px;background:url(img/weeHoodie.png);position:absolute;left:-2px;top:0px;pointer-events:none;"></div><a class="blueLink" href="http://www.redbubble.com/people/dashnet" target="_blank" style="padding-left:12px;" id="topbarMerch">Merch!</a></div>
-		<div style="position:relative;"><div style="width:22px;height:32px;background:url(img/patreon.png);position:absolute;left:0px;top:0px;pointer-events:none;"></div><a class="orangeLink" href="https://www.patreon.com/dashnet" target="_blank" style="padding-left:16px;" id="topbarPatreon">Patreon</a></div>
-		<div style="position:relative;display:none;font-weight:bold;" id="heralds"><div style="position:absolute;top:-4px;width:31px;height:39px;background:url(img/heraldFlag.png);left:50%;margin-left:-15px;pointer-events:none;"></div><div id="heraldsAmount" style="position:relative;z-index:10;text-shadow:0px 1px 0px #000,0px 0px 6px #ff00e4;color:#fff;">-</div></div>
-		<div><a class="lightblueLink" style="font-weight:bold;" href="https://play.google.com/store/apps/details?id=org.dashnet.cookieclicker" target="_blank" id="topbarMobileCC">Cookie Clicker for Android</a></div>
-		<div><a class="lightblueLink" style="font-weight:bold;" href="https://store.steampowered.com/app/1454400/Cookie_Clicker/" target="_blank" id="topbarSteamCC">Cookie Clicker on Steam</a></div>
-		<div><a href="//orteil.dashnet.org/randomgen/" target="_blank" id="topbarRandomgen">RandomGen</a></div>
-		<div><a href="//orteil.dashnet.org/igm/" target="_blank" id="topbarIGM">Idle Game Maker</a></div>
-		<div style="float:right;position:relative;"><div id="tinyglobe" style="position:absolute;top:-4px;width:22px;height:22px;background:url(img/tinyglobeSheet.gif);right:4px;top:4px;pointer-events:none;"></div><a id="changeLanguage" style="font-variant:small-caps;padding-right:20px;" onmouseover="INTERVAL_TINYGLOBE=setInterval(function(){var tinyglobe=document.getElementById('tinyglobe');tinyglobe.style.backgroundPosition=(parseInt(tinyglobe.style.backgroundPosition)-22)+'px';},30);" onmouseout="clearInterval(INTERVAL_TINYGLOBE);">Change language</a><script>document.getElementById('tinyglobe').style.backgroundPosition=(-[0,19,27][Math.floor(Math.random()*3)]*22)+'px';</script></div>
-		<div id="links" class="hoverer">
-			Other versions
-			<div class="hoverable">
-				<a href="../" target="_blank" id="linkVersionLive">Live version</a>
-				<a href="beta" target="_blank" id="linkVersionBeta">Try the beta!</a>
-				<a href="//orteil.dashnet.org/cookieclicker/v10466" target="_blank" id="linkVersionOld">v. 1.0466</a>
-				<a href="//orteil.dashnet.org/experiments/cookie/" target="_blank">Classic</a>
-			</div>
-		</div>
-	</div>
-	<div id="game">
-		<div id="versionNumber" class="title"></div>
-		<script>document.getElementById('versionNumber').innerHTML='v. '+VERSION;</script>
-		<div id="offGameMessageWrap">
-			<div id="offGameMessage">
-				<div id="loader">
-					<div class="spinnyBig"></div>
-					<div class="spinnySmall"></div>
-					<div id="loading" class="title">Loading...</div>
-					<div id="failedToLoad" class="title">This is taking longer than expected.<br>
-					<div style="font-size:65%;line-height:120%;"><!-- error -->Slow connection? If not, please make sure your javascript is enabled, then refresh.<br>
-					If problems persist, this might be on our side - wait a few minutes, then hit ctrl+f5!<!-- /error --></div></div>
-					<div id="ifIE9" class="title" style="font-size:100%;line-height:120%;">Your browser may not be recent enough to run Cookie Clicker.<br>You might want to update, or switch to a more modern browser such as Chrome or Firefox.</div>
-				</div>
-			</div>
-		</div>
+<input id="searchBar" type="text" placeholder="Search games...">
 
-		<canvas id="backgroundCanvas"></canvas>
-		
-		<div id="goldenCookie" class="goldenCookie"></div>
-		<div id="seasonPopup" class="seasonPopup"></div>
-		<div id="shimmers"></div>
-		<div id="alert"></div>
-		<div id="particles"></div>
-		<div id="sparkles" class="sparkles"></div>
-		<div id="notes"></div>
-		<div id="darken"></div>
-		<div id="toggleBox" class="framed prompt"></div>
-		<div id="promptAnchor"><div id="prompt" class="framed"><div id="promptContent"></div><div id="promptClose" class="close" style="display:none;" onclick="PlaySound('snd/tickOff.mp3');Game.ClosePrompt();">x</div></div></div>
-		<div id="ascend">
-			<div id="ascendBG"></div>
-			<div id="ascendZoomable"><div id="ascendContent"><div id="ascendUpgrades" style="position:absolute;"></div></div></div>
-			<div id="ascendOverlay"></div>
-		</div>
-		
-		<div id="debug"><div id="devConsole" class="framed"></div><div id="debugLog"></div></div>
-		
-		<div id="sectionLeft" class="inset">
-			<canvas id="backgroundLeftCanvas" style="z-index:5;"></canvas>
-			<div class="blackFiller"></div>
-			<div class="blackGradient"></div>
-			<div id="sectionLeftInfo"></div>
-			<div id="cookies" class="title"></div>
-			<div id="bakeryNameAnchor"><div id="bakeryName" class="title"></div></div>
-			<div id="specialPopup" class="framed prompt offScreen"></div>
-			<div id="buffs" class="crateBox"></div>
-			<div id="cookieAnchor">
-				<button id="bigCookie"></button>
-				<div id="cookieNumbers"></div>
-			</div>
-			<div id="sectionLeftExtra"></div>
-		</div>
+<div id="buttons"></div>
 
-		<div class="separatorLeft" id="leftBeam"></div>
-		<div class="separatorRight" id="rightBeam"></div>
+<script>
+  const games = [];
 
-		<div id="sectionMiddle" class="inset">
-			<div id="comments" class="inset title">
-				<div id="prefsButton" class="panelButton"><div class="subButton">Options</div></div>
-				<div id="statsButton" class="panelButton"><div>Stats</div></div>
-				<div id="logButton" class="panelButton"><div>Info</div><div id="checkForUpdate">New update!</div></div>
-				<div id="legacyButton" class="panelButton"><div class="subButton">Legacy</div><div id="ascendMeterContainer" class="smallFramed meterContainer"><div id="ascendMeter" class="meter filling"></div></div><div class="roundedPanel" id="ascendNumber"></div><div id="ascendTooltip" class="framed"></div></div>
-				<div id="commentsText">
-					<div id="commentsText1" class="commentsText"></div>
-					<div id="commentsText2" class="commentsText"></div>
-				</div>
-				<div class="separatorBottom"></div>
-			</div>
-			<div id="centerArea">
-				<div id="buildingsTitle" class="inset title zoneTitle">Buildings</div>
-				<div id="buildingsMaster"></div>
-				<div id="rows"></div>
-				<div id="menu"></div>
-			</div>
-		</div>
-		
-		<div id="sectionRight" class="inset">
-			<!-- ad -->
-			<div class="ifNoAds" style="width:300px;text-align:center;padding:8px 0px;background:rgba(0,0,0,0.95);font-size:10px;opacity:0.5;text-shadow:0px 0px 2px #000,0px 1px 0px #000;text-align:center;">
-				Cookie Clicker is mainly supported by ads.<br>Consider unblocking our site or checking out our <a href="https://www.patreon.com/dashnet" target="_blank">Patreon</a>!
-			</div>
-			<div id="smallSupport" style="width:300px;text-align:center;padding-bottom:40px;background:rgba(0,0,0,0.5);position:relative;z-index:100;">
-				
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<!-- Cookie Clicker Header Responsive -->
-				<ins class="adsbygoogle"
-					 style="display:block;margin:auto;width:300px;max-height:300px;overflow:hidden;"
-					 data-ad-client="ca-pub-8491708950677704"
-					 data-ad-slot="7077525342"
-					 data-ad-format="rectangle"
-					 data-full-width-responsive="true"></ins>
-				<script>
-				(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
-				
-				<script>
-				document.addEventListener('DOMContentLoaded',function(){
-					setTimeout(function(){
-						var adSlot=document.querySelector("ins[data-ad-slot='7077525342']");
-						if(adSlot && adSlot.getAttribute('data-ad-status')=='unfilled')
-						{
-							var backfill=document.createElement('div');backfill.innerHTML='<iframe style="border:none;" src="https://serve.playsaurus.com/300x250.html" width="300" height="250" sandbox="allow-scripts allow-popups"></iframe>';
-							adSlot.parentNode.replaceChild(backfill,adSlot);
-						}
-					},3000);
-				});
-				</script>
-				
-				<div class="supportComment">^ Sponsored link ^</div>
-			</div>
-			<!-- /ad -->
-			<div id="store">
-				<div id="storeTitle" class="inset title zoneTitle">Store</div>
-				<div id="toggleUpgrades" class="storeSection upgradeBox"></div>
-				<div id="techUpgrades" class="storeSection upgradeBox"></div>
-				<div id="vaultUpgrades" class="storeSection upgradeBox"></div>
-				<div id="upgrades" class="storeSection upgradeBox"></div>
-				<div id="products" class="storeSection"></div>
-			</div>
-			<!-- ad -->
-			<div id="detectAds" class="adBanner" style="background:transparent;width:1px;height:1px;"></div>
-			<div id="support" style="margin-top:130px;">
-				<div class="supportComment">v Sponsored links v</div>
-				<div style="position:relative;">
-				
-					<div style="position:relative;z-index:100;min-height:250px;">
-					
-						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-						<!-- Cookie Clicker Responsive -->
-						<ins class="adsbygoogle"
-							 style="display:block;margin:auto;"
-							 data-ad-client="ca-pub-8491708950677704"
-							 data-ad-slot="9780186019"
-							 data-ad-format="auto"
-							 data-full-width-responsive="true"></ins>
-						<script>
-						(adsbygoogle = window.adsbygoogle || []).push({});
-						</script>
-				
-						<script>
-						document.addEventListener('DOMContentLoaded',function(){
-							setTimeout(function(){
-								var adSlot=document.querySelector("ins[data-ad-slot='9780186019']");
-								if(adSlot && adSlot.getAttribute('data-ad-status')=='unfilled')
-								{
-									var backfill=document.createElement('div');backfill.innerHTML='<iframe style="border:none;" src="https://serve.playsaurus.com/300x600.html" width="300" height="600" sandbox="allow-scripts allow-popups"></iframe>';
-									adSlot.parentNode.replaceChild(backfill,adSlot);
-								}
-							},3000);
-						});
-						</script>
-						
-						<div style="height:32px;"></div>
-						
-						<!-- Playsaurus banner -->
-						<a class="ad" id="plad" target="_blank" title="AdventureQuest Worlds" style="width:300px;height:64px;display:block;position:relative;margin:0px auto;">
-						</a>
-						<script>var plAd=document.getElementById('plad');var plAdList=[['Mr. Mine','playsaurusbanner1.png','https://playsaurusstats.com/redirect.php?url=https%3A%2F%2Fmrmine.com&cmd=pageVisit&gameName=MrMine&utm_source=Dashnet&utm_medium=CC&utm_campaign=CCAd&utm_content=&influencer=&hash=bdf9709304a910abd955a4a9d607f7b2'],['Clicker Heroes','playsaurusbanner2.png','https://playsaurusstats.com/redirect.php?url=https%3A%2F%2Fclickerheroes.com&cmd=pageVisit&gameName=CH1&utm_source=Dashnet&utm_medium=CC&utm_campaign=CCAd&utm_content=&influencer=&hash=a1cb78d7d68c2f6bacd193aef75aa3ce'],['Clicker Heroes','playsaurusbanner3.png','https://playsaurusstats.com/redirect.php?url=https%3A%2F%2Fclickerheroes.com&cmd=pageVisit&gameName=CH1&utm_source=Dashnet&utm_medium=CC&utm_campaign=CCAd&utm_content=&influencer=&hash=a1cb78d7d68c2f6bacd193aef75aa3ce']];var plAdRandom=plAdList[Math.floor(Math.random()*plAdList.length)];plAd.style.background='url(img/'+plAdRandom[1]+') no-repeat';plAd.href=plAdRandom[2];plAd.title=plAdRandom[0];</script>
-						
-						<div style="height:32px;"></div>
-						
-						<!-- AdventureQuest Worlds banner -->
-						<a class="ad" id="aqad" href="http://www.aq.com/landing/cookie/?utm_campaign=AQW_CookieClicker&utm_source=CookieClicker" target="_blank" title="AdventureQuest Worlds" style="background:url(img/AQWorlds_CookieClicker_300x40.png) no-repeat;width:300px;height:64px;display:block;position:relative;margin:0px auto;">
-						</a>
-						
-					</div>
-					
-				</div>
-			</div>
-			<!-- /ad -->
-		</div>
-		
-		<div id="tooltipAnchor"><div id="tooltip" class="framed" onMouseOut="Game.tooltip.hide();"></div></div>
-		<div id="preloadImages" style="display:none;"></div>
+  function add(name, url, img = null) {
+    games.push({ name, url, img });
 
-	</div>
+    const card = document.createElement("div");
+    card.className = "game-card";
+    card.dataset.name = name.toLowerCase();
 
-</div>
+    if (img) {
+      const image = document.createElement("img");
+      image.src = img;
+      image.onclick = () => loadGame(url);
+      card.appendChild(image);
+    }
+
+    const button = document.createElement("button");
+    button.textContent = name;
+    button.onclick = () => loadGame(url);
+    card.appendChild(button);
+
+    document.getElementById("buttons").appendChild(card);
+  }
+
+  // Search filter
+  document.getElementById("searchBar").addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    document.querySelectorAll(".game-card").forEach(card => {
+      card.style.display = card.dataset.name.includes(query) ? "block" : "none";
+    });
+  });
+
+  function loadGame(url) {
+    fetch(url)
+      .then(res => res.text())
+      .then(html => {
+
+       
+        const css = `
+          <style>
+            .game-header {
+              width: 100%;
+              padding: 0.2px;
+              background: #222;
+              color: white;
+              font-size: 24px;
+              text-align: center;
+              position: fixed;
+              top: 0;
+              left: 0;
+              z-index: 9999;
+            }
+            .fullscreen-btn,
+            .exit-btn {
+              float: right;
+              margin-right: 20px;
+              padding: 8px 15px;
+              background: #1e90ff;
+              border: none;
+              border-radius: 5px;
+              color: white;
+              cursor: pointer;
+              margin-left: 10px;
+            }
+            .fullscreen-btn:hover,
+            .exit-btn:hover {
+              background: #0f6ed6;
+            }
+          </style>
+        `;
+
+        const header = `
+          <div class="game-header">
+            ⭐ Tiny Math ⭐
+            <button class="exit-btn" onclick="location.reload()">Exit</button>
+            <button class="fullscreen-btn" onclick="document.documentElement.requestFullscreen()">
+              Fullscreen
+            </button>
+          </div>
+          <div style="height:20px;"></div>
+        `;
+
+        document.open();
+        document.write(css + header + html);
+        document.close();
+      });
+  }
+
+ 
+ add(
+    "Contact",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Contact.html",
+    "https://www.bing.com/th/id/OIP.uhR3IM6sbLSSI--C1vKhsQHaHa?w=198&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
+  );
+  
+  add(
+    "Credits",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Credits.html",
+    "https://th.bing.com/th/id/OIP.SJWpGIEqGnU8opRxaEOhjAHaE_?w=108&h=108&c=1&bgcl=ae02d7&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "1v1.lol",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/1v1.lol.html",
+    "https://th.bing.com/th/id/OIP.UM-KXyhZgw6JYat1b206wwHaD4?w=312&h=200&c=12&rs=1&o=6&dpr=1.3&pid=23.1"
+  );
+  
+  add(
+    "2048",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/2048.html",
+    "https://th.bing.com/th/id/OIP.k8hnulFUksKfYXEAceFDrwHaD4?w=108&h=108&c=1&bgcl=584139&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "2v2.io",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/2v2.io.html",
+    "https://th.bing.com/th/id/OIP._GmbTOX07F_Gl2u42e_xDgHaEK?w=108&h=108&c=1&bgcl=ee9f4f&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "3d dash",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/3d-dash.html",
+    "https://th.bing.com/th/id/OIP.YHIIemC1zfOkV5ScZKiDawHaES?w=108&h=108&c=1&bgcl=4ab9cd&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Among us",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Among-us.html",
+    "https://th.bing.com/th/id/OSAAS.0867281A389063953D46F06AD6D7F208?w=52&h=52&c=1&rs=1&o=6&dpr=1.3&pid=TechQna"
+  );
+  
+   add(
+    "A pizza mart",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Apizzamart.html",
+    "https://th.bing.com/th/id/OIP.yxqb4VnqHThGtnb9HacKmQAAAA?w=108&h=108&c=1&bgcl=2f19a8&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Baldi Basics",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Baldi-Basics.html",
+    "https://th.bing.com/th/id/OIP.uSj87WtfdlcYP9rPpLGY_QHaHa?w=108&h=108&c=1&bgcl=6f92a6&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Baseball bros",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Baseball-bros.html",
+    "https://th.bing.com/th/id/OIP.wQ1X5J3B9g5olcMbP09mJgHaD4?w=108&h=108&c=1&bgcl=f77664&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Basket bros",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Basketbros.html",
+    "https://th.bing.com/th/id/OIP.hSVYsV1baTNTu0T2UQBidAHaHa?w=108&h=108&c=1&bgcl=71523d&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Basket random",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Basket-random.html",
+    "https://th.bing.com/th/id/OSAAS.2FAAB9CD741DE230E5DDF9C36BEBB96C?w=52&h=52&c=17&rs=1&o=6&dpr=1.3&pid=TechQna"
+  );
+  
+  add(
+    "Basketball stars",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Basketstars.html",
+    "https://th.bing.com/th/id/OIP.zyXMK171jAHK9WncsvUp-QHaHa?w=108&h=108&c=1&bgcl=bc7e5b&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Bitplanes",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Bitplanes.html",
+    "https://th.bing.com/th/id/OIP.17vC9ex-2KxlvCI3jYSMGAHaD4?w=108&h=108&c=1&bgcl=3d5434&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Boxing random",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Boxing-random.html",
+    "https://th.bing.com/th/id/OIP.Crdjx_y0CEZLMq-KTqxL2wAAAA?w=108&h=108&c=1&bgcl=aab0b2&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Bloons tower defense 1",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/bloonstd1.html",
+    "https://th.bing.com/th/id/OIP.yVuHCHaIJQYsmmXO8OPxEAHaHa?w=108&h=108&c=1&bgcl=e2a829&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Bloons tower defense 2",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/bloonstd2.html",
+    "https://th.bing.com/th/id/OIP.Y7EdKOH428bol8BPhQ4kAgHaEk?w=108&h=108&c=1&bgcl=14ab95&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Bloons tower defense 3",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/bloonstd3.html",
+    "https://th.bing.com/th/id/OIP.Fku1M8YO2760RFzeziAxTAAAAA?w=108&h=108&c=1&bgcl=f57de8&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Bloons tower defense 4",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/bloonstd4.html",
+    "https://th.bing.com/th/id/OIP.YkWPsAOp_ZP_hMAFkk2v3QAAAA?w=108&h=108&c=1&bgcl=f9d31b&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Bloons tower defense 5",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/bloonstd5.html",
+    "https://th.bing.com/th/id/OIP.4brB5DTFPOTqw9X6xROJZgAAAA?w=108&h=108&c=1&bgcl=144ccc&r=0&o=7&dpr=1.3&pid=ImgRC&rm=33"
+  );
+  
+  add(
+    "Cookie clicker",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Cookieclicker.html",
+    "https://th.bing.com/th/id/OIP.lLS6EgulTCl1PSb0PNBQegHaEP?w=108&h=108&c=1&bgcl=61fda3&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Curveball",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Curveball.html",
+    "https://th.bing.com/th/id/OIP.gr7sJYA3t8S6yuxPLTrsTgHaE8?w=108&h=108&c=1&bgcl=02ed46&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Drift Boss",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Drift-boss.html",
+    "https://th.bing.com/th/id/OIP.gM2zsgSRvitBBwn3x25DnQAAAA?w=108&h=108&c=1&bgcl=fc5934&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Drive mad",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Drive-mad.html",
+    "https://th.bing.com/th/id/OIP.0ssFCW7iZJRjpOzgM-ZfowHaHa?w=160&h=108&c=7&qlt=90&bgcl=b73cab&r=0&o=6&dpr=1.3&pid=13.1"
+  );
+  
+  add(
+    "Dynamic systems",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Dynamic-Systems.html",
+    "https://th.bing.com/th/id/OIP.TSdBYIh6zZtL2sk29P2y8AHaE6?w=200&h=200&c=10&o=6&dpr=1.3&pid=genserp&rm=2"
+  );
+  
+  add(
+    "Eaglercraft indev",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/eaglercraft-indev.html",
+    "https://th.bing.com/th/id/OIP.fKrADwRmELZcGYSmWrAcAwHaEK?w=108&h=108&c=1&bgcl=b75f22&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Eggy car",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Eggy-car.html",
+    "https://www.bing.com/th?id=OSK.m3a5Q7MRlcYliMMzGbrjmnVxBuIeZlRcp03fQ8H_zOM&w=90&h=120&qlt=120&c=6&rs=1&cdv=1&pid=RS"
+  );
+  
+  add(
+    "Elastic face",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/elastic-face.html",
+    "https://th.bing.com/th/id/OIP.HzkWO5FBLkQibLa3oQcJnQHaD4?w=108&h=108&c=1&bgcl=d58b17&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Escape road",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Escape-road.html",
+    "https://th.bing.com/th/id/OIP.fbYx6LBOKg75S3Mrlb2Q5QHaD4?w=108&h=108&c=1&bgcl=9ab19b&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at freddys",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fnaf.html",
+    "https://th.bing.com/th/id/OIP.YCyIq25e5Xqryfxc9UWcjQAAAA?w=108&h=108&c=1&bgcl=565496&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at freddys 2",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fnaf2.html",
+    "https://th.bing.com/th/id/OIP.EtMYVX4IzTlMUBh8y2pVCgHaEK?w=108&h=108&c=1&bgcl=21c9ee&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at freddys 3",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fnaf3.html",
+    "https://th.bing.com/th/id/OIP.w8-2hkQ7JzXOKIFhC-KT5wAAAA?w=108&h=108&c=1&bgcl=a24283&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at freddys 4",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fnaf4.html",
+    "https://th.bing.com/th/id/OIP.E_aWrAs1HrqzB0Nv2b5SNgAAAA?w=108&h=108&c=1&bgcl=979194&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at freddys pizza simulator",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fivenightsatfreddyspizzasimulator.html",
+    "https://th.bing.com/th/id/OIP.Pn91m4XMiiUrrPLWTQ4jPwAAAA?w=108&h=108&c=1&bgcl=c03209&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at freddys sister location",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fivenightsatfreddyssisterlocation.html",
+    "https://th.bing.com/th/id/OIP.Vka5khIcDDE_RiC7QRAt1AHaEK?w=108&h=108&c=1&bgcl=8712e1&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at freddys ultimate custom night",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fivenightsatfreddysultimatecustomnight.html",
+    "https://th.bing.com/th/id/OIP.WINYnKbkNJZLDtjh70CAmgHaEH?w=108&h=108&c=1&bgcl=6aed8e&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at freddys world",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fivenightsatfreddysworld.html",
+    "https://th.bing.com/th/id/OIP.Akrz4RDAsqD7iKdrJNHHUgHaHa?w=108&h=108&c=1&bgcl=fbad11&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at shreks hotel",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fivenightsatshrekshotel.html",
+    "https://th.bing.com/th/id/OIP.Wk__FbM4axrvsUvXwsz3hQHaEK?w=108&h=108&c=1&bgcl=bfec00&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Five nights at winstons",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/fivenightsatwinstons.html",
+    "https://th.bing.com/th/id/OIP.0GWFhUZJhWh6WiWjZgHwegHaEK?w=108&h=108&c=1&bgcl=c3a3bf&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Football bros",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Footballbros.html",
+    "https://th.bing.com/th/id/OIP.JAy5_YVqGLGkr-2kO4c8MwHaHa?w=108&h=108&c=1&bgcl=d439c6&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Geometry dash lite",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Geometry-dash-lite.html",
+    "https://th.bing.com/th/id/OIP.6GvJ7LEqsOrlGU026EzoigAAAA?w=108&h=108&c=1&bgcl=9cdd80&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Getaway shootout",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Getaway-shootout.html",
+    "https://th.bing.com/th/id/OIP.QphRyaDSb1eG0Vg3Eam6wQHaEK?w=108&h=108&c=1&bgcl=146ca9&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Mario kart",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Mario-Karts.html",
+    "https://tse3.mm.bing.net/th/id/OIP.KYzG36cmo3y3VdTJErMbjQHaGE?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Melon playground",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/melon-playground.html",
+    "https://th.bing.com/th/id/OIP.IeC5DimtO58ERT6PEdOfQgHaHa?w=80&h=80&c=12&rs=1&r=0&o=6&dpr=1.3&pid=23.1"
+  );
+  
+  add(
+    "Minecraft 1.9",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/minecraft1dot9.html",
+    "https://th.bing.com/th/id/OIP.2dpJ7y_JasG0fi84aMysPwAAAA?w=108&h=108&c=1&bgcl=063fb1&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Moms kitchen",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Moms-kitchen.html",
+    "https://th.bing.com/th/id/OIP.gpK1xlDeporl_n0Z0fPvfQHaD4?w=108&h=108&c=1&bgcl=2e355e&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Moto x3m",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Motox3m.html",
+    "https://th.bing.com/th/id/OIP.p1g_RLMg_p71IQU4v9N8ZAHaHa?w=154&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+  );
+  
+  add(
+    "Moto x3m2",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Motox3m2.html",
+    "https://th.bing.com/th/id/OIP.pUCjkECwYNpTQ-pzuqywnwHaHa?w=178&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+  );
+  
+  add(
+    "Moto x3m3",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Motox3m3.html",
+    "https://th.bing.com/th/id/OIP.EWXG1JN5uxbVJgL96gCASwHaF_?w=217&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+  );
+  
+  add(
+    "Moto x3m pool party",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Motox3mpoolparty.html",
+    "https://th.bing.com/th/id/OIP.P7893BhzA1v96vudRWvMkgHaEf?w=108&h=108&c=1&bgcl=260a3e&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Moto x3m spookyland",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Motox3mspookyland.html",
+    "https://th.bing.com/th/id/OIP.rPf8iVklappoNyd47dBJ_gAAAA?w=174&h=176&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+  );
+  
+  add(
+    "Moto x3m winter",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Motox3mwinters.html",
+    "https://th.bing.com/th/id/OIP.ZGIIVv9kw2BHAHZqBBHjtgHaD4?w=108&h=108&c=1&bgcl=65eb29&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Oh flip!",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Oh-flip.html",
+    "https://img.poki-cdn.com/cdn-cgi/image/quality=78,width=1200,height=1200,fit=cover,f=png/413c00420cfc36d0ee541017566a8e95.jfif"
+  );
+  
+  add(
+    "OvO",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/OvO.html",
+    "https://tse2.mm.bing.net/th/id/OIP.b9c9zizclRoHue4Rug5TEQHaEF?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Papa louie night hunt 2",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papalouienighthunt2.html",
+    "https://th.bing.com/th/id/OIP.TAkCV2BdfJ3bpoV9f1H1igAAAA?w=108&h=108&c=1&bgcl=e7811e&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa louie when burgers attack",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papalouiewhenburgersattack.html",
+    "https://th.bing.com/th/id/OIP.X5-Cei7jwEaH4XQN2zUXDwHaD4?w=108&h=108&c=1&bgcl=c0e774&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa louie when pizzas attack",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papalouiewhenpizzasattack.html",
+    "https://th.bing.com/th/id/OIP.XWBUN6GprWsf05Ct4pKusgHaHa?w=108&h=108&c=1&bgcl=8045c5&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa louie when sundaes attack",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papalouiewhensundaesattack.html",
+    "https://th.bing.com/th/id/OIP.9DNyTY0AyER0TqxQGoZAQAHaHa?w=200&h=200&c=10&o=6&dpr=1.3&pid=genserp&rm=2"
+  );
+  
+  add(
+    "Papa's Bakeria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-bakeria.html",
+    "https://th.bing.com/th/id/OIP.Rufx3mqXIwVwpFax7E0UZwAAAA?w=108&h=108&c=1&bgcl=50a9ee&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Cheseria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-cheeseria.htmll",
+    "https://th.bing.com/th/id/OIP.8aHZgigKsf31afTfcT5moQHaHa?w=108&h=108&c=1&bgcl=4ce325&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Cupcakeria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-cupcakeria.html",
+    "https://th.bing.com/th/id/OIP.mPl26NHpTcav7rWd0B1wtgHaHa?w=108&h=108&c=1&bgcl=96c2d7&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Donuteria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-donuteria.html",
+    "https://th.bing.com/th/id/OIP.zddw2crdpE3zOsXw9wj87AHaEU?w=108&h=108&c=1&bgcl=5445f9&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Freezeria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-freezeria.html",
+    "https://th.bing.com/th/id/OIP.0TfXs-36uGnGqUH3_RLqHwHaHa?w=108&h=108&c=1&bgcl=ade7dd&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Hotdogeria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-hot-doggeria.html",
+    "https://th.bing.com/th/id/OIP.DRooXlNHkZeFaWykrVroigHaHa?w=108&h=108&c=1&bgcl=f82128&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Pancakeria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-pancakeria.html",
+    "https://th.bing.com/th/id/OIP.kCZ9-M0mUUaT4KQoMuoyoAHaHa?w=108&h=108&c=1&bgcl=36bf0e&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Pastaria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-pasteria.html",
+    "https://th.bing.com/th/id/OIP.BmqcZWfh8qm9OONITuO5nwHaHa?w=108&h=108&c=1&bgcl=e98861&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Pizzeria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-pizzeria.html",
+    "https://th.bing.com/th/id/OIP.X7SWMnAv83EijyUkL_SXnQAAAA?w=108&h=108&c=1&bgcl=be9689&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Scooperia",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-scooperia.html",
+    "https://th.bing.com/th/id/OIP.2aMFc9sJ1cdJYURnMRyf4wHaHa?w=108&h=108&c=1&bgcl=f870ac&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Sushiria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-sushiria.html",
+    "https://th.bing.com/th/id/OIP.2Yxh_EbKZGM84Dj_tW3_0QHaHa?w=108&h=108&c=1&bgcl=e03663&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Taco mia",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-taco-mia.html",
+    "https://th.bing.com/th/id/OIP.KgPdwA8nci848ZubDPXzRgHaHa?w=108&h=108&c=1&bgcl=8ef9fb&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Papa's Wingeria",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/papas-wingeria.html",
+    "https://th.bing.com/th/id/OIP.Kv6diZVZeqbYwgUXr-mPKQHaEU?w=108&h=108&c=1&bgcl=3167a7&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Paper io 2",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Paperio2.html",
+    "https://th.bing.com/th/id/OIP.IZkKyvWQU85z5fokLFuY-wAAAA?w=108&h=108&c=1&bgcl=2aad70&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Polytrack",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Polytrack.html",
+    "https://tse1.mm.bing.net/th/id/OIP.2DIzv1IE6pTinXPlmFegQAAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Race survival arena King",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Race-King.html",
+    "https://tse1.mm.bing.net/th/id/OIP.7ejOhIxAy14bVlm8eESsiwAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Ragdoll archers",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Ragdoll-archers.html",
+    "https://tse3.mm.bing.net/th/id/OIP.kJV4XZIOX8CAcdBBf9yBwwHaHa?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Ragdoll hit",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Ragdoll-hit.html",
+    "https://tse1.mm.bing.net/th/id/OIP.UibXzxvbpSBUwK3m_vvYnAHaFx?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Retro bowl",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Retro-Bowl.html",
+    "https://tse3.mm.bing.net/th/id/OIP.-hgpVvMUnrrUd7swRTR7ggHaEo?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Roblox (somewhat works)",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Roblox.html",
+    "https://th.bing.com/th/id/OIP.MsDzdsFLe4-RJlwRBBUoFwHaD4?w=108&h=108&c=1&bgcl=bf4bab&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Rooftop snipers",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Rooftop-snipers.html",
+    "https://tse1.mm.bing.net/th/id/OIP.k4C2I5jF3VuZEGHsHPRThgAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Slither.io",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Slither.io.html",
+    "https://tse3.mm.bing.net/th/id/OIP.kC7UMbzHpXmd7MGMBWCscQHaEM?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Slope",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Slope.html",
+    "https://tse2.mm.bing.net/th/id/OIP.R-YomN1f93P5OCWjfh8yPgAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Snow rider",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Snow-rider.html",
+    "https://tse2.mm.bing.net/th/id/OIP.Uddn3LXFbB-iutHNKhj5gAHaHa?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Soccer bros",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Soccerbros.html",
+    "https://th.bing.com/th/id/OIP.nVQ7fkxKtmra3QSe6Tv3nQHaFj?w=108&h=108&c=1&bgcl=b16508&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Soccer random",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Soccer-random.html",
+    "https://tse4.mm.bing.net/th/id/OIP.09kY4K3Tx9CbrIsVLzm__AHaHa?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Stickman duel",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Stickman-duel.html",
+    "https://tse3.mm.bing.net/th/id/OIP.C3zjBKLA5x-yiBPTY3z4WwHaHa?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Super mario 63",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Super-mario-63.html",
+    "https://tse1.mm.bing.net/th/id/OIP.vOjYlkpH0yLd89MynsuzpgAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Super mario 64",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Super-mario-64.html",
+    "https://tse1.mm.bing.net/th/id/OIP.at_QpUN_VNDU4Mrw_8FOOwHaHa?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Tag",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Tag.html",
+    "https://tse2.mm.bing.net/th/id/OIP.da9b1NQ_reRGvElRiNaY9wAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Time shooter 2",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Time-shooter-2.html",
+    "https://tse2.mm.bing.net/th/id/OIP.RdyEuybhOeG_cQ5BFt9eOQHaHa?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Time shooter 3",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Time-shooter-3.html",
+    "https://tse1.mm.bing.net/th/id/OIP.jGYKmnLbNY9zraKfLAng-gHaHa?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Use Boxmen",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Use-Boxmen.html",
+    "https://tse3.mm.bing.net/th/id/OIP.o3S7tVM0gcg72we_WnqVcAAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Wrestle bros",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Wrestle.html",
+    "https://th.bing.com/th/id/OIP._qT96zPOODxPKgHZUG1mAgHaEK?w=108&h=108&c=1&bgcl=677244&r=0&o=7&dpr=1.3&pid=ImgRC&rm=3"
+  );
+  
+  add(
+    "Vex",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/vex.html",
+    "https://tse3.mm.bing.net/th/id/OIP.bxeY4Ho5esHXTOU-TKf98gAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Vex 2",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Vex-2.html",
+    "https://tse4.mm.bing.net/th/id/OIP.stZl5bSrYJegvCz-kPMLKQHaFj?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Vex 3",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/vex-3.html",
+    "https://tse3.mm.bing.net/th/id/OIP.fRaMSIMs6JuIkyVHc0RtjQHaHa?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Vex 3 Christmas",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Vex-3-xmas.html",
+    "https://tse1.mm.bing.net/th/id/OIP.rJGwvnt1avrn2hNHO64hdQAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Vex 4",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/vex-4.html",
+    "https://tse2.mm.bing.net/th/id/OIP.YNSKqoK18uRqBK5HvZRENgAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Vex 5",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/vex-5.html",
+    "https://tse2.mm.bing.net/th/id/OIP.5Mp5nACRd_-dWbf63lDWNQAAAA?pid=Api&P=0"
+  );
+  
+  add(
+    "Vex 6",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/Vex-6.html",
+    "https://tse4.mm.bing.net/th/id/OIP.CB-hlgBwrKeDfEj4vC4pfwAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Vex 7",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/vex-7.html",
+    "https://tse1.mm.bing.net/th/id/OIP.HdD2ZjH9kmyVk4S6lOInuQAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Vex 8",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/vex-8.html",
+    "https://tse1.mm.bing.net/th/id/OIP.x3L-RMlaqrpRSu2zJwYQ9gAAAA?pid=Api&h=220&P=0"
+  );
+  
+  add(
+    "Vex Challenges",
+    "https://raw.githubusercontent.com/Tinymath/Tinymath-templates/refs/heads/main/vex-challenges.html",
+    "https://tse1.mm.bing.net/th/id/OIP.vnhhrNNVUOqcrcf4M8HDCQAAAA?pid=Api&h=220&P=0"
+  );
+</script>
 
 </body>
 </html>
